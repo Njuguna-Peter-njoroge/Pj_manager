@@ -226,6 +226,178 @@ footer {
     color: var(--primary-color);
 }
 
+/* Users table basic styles */
+#usersTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+#usersTable thead {
+  background-color: #f4f4f4;
+  text-align: left;
+}
+
+#usersTable th, #usersTable td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Avatar and name cell */
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+/* Role and status badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: white;
+}
+
+.badge.admin {
+  background-color: #007bff;
+}
+
+.badge.user {
+  background-color: #6c757d;
+}
+
+.badge.active {
+  background-color: #28a745;
+}
+
+.badge.inactive {
+  background-color: #dc3545;
+}
+
+/* Button inside table */
+.btn-small {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border-radius: 6px;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #007bff;
+  border: 1px solid #007bff;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-outline:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+#projectsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+#projectsTable thead {
+  background-color: #f4f4f4;
+  text-align: left;
+}
+
+#projectsTable th,
+#projectsTable td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #fff;
+}
+
+.status-pending {
+  background-color: #ffc107;
+}
+
+.status-in_progress {
+  background-color: #17a2b8;
+}
+
+.status-completed {
+  background-color: #28a745;
+}
+
+/* Buttons inside table */
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-small {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border-radius: 6px;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #007bff;
+  border: 1px solid #007bff;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-outline:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+  border: 1px solid transparent;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* User dropdown */
+.user-assign-select {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  width: 100%;
+  max-width: 200px;
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero h2 {

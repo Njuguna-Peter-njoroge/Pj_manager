@@ -300,21 +300,346 @@
   font-size: 0.875rem;
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-  .dashboard-container {
-    flex-direction: column;
-  }
+/* Settings Section */
+#settings {
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
 
-  .sidebar {
-    width: 100%;
-  }
+#settings h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #333;
+}
 
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
+/* Form Groups */
+#adminSettingsForm .form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
 
-  .projects-grid {
-    grid-template-columns: 1fr;
+#adminSettingsForm label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+#adminSettingsForm input {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.3s ease;
+}
+
+#adminSettingsForm input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Submit Button */
+#adminSettingsForm .btn-primary {
+  margin-top: 1.5rem;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#adminSettingsForm .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column; /* stack children vertically */
+  height: 100vh;
+  width: 250px;
+  background-color: #1e1e2f;
+  color: #fff;
+  padding: 1rem;
+}
+
+/* Optional: Center header text */
+.sidebar-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Navigation fills available space */
+.sidebar-nav {
+  flex: 1;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column; /* make nav links vertical */
+  gap: 1rem;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #cfd2dc;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  background-color: #2f2f45;
+  color: #fff;
+}
+
+/* Footer stays at the bottom */
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  text-align: center;
+}
+
+#logoutBtn {
+  width: 50%;
+  padding: 0.75rem;
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#logoutBtn:hover {
+  background-color: #c0392b;
+}
+
+
+/* Create Project Modal Overlay */
+#projectFormContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30, 30, 47, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  transition: opacity 0.3s;
+}
+
+#projectFormContainer.hidden {
+  display: none;
+}
+
+/* Modal Card */
+#projectForm {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(60, 60, 120, 0.18), 0 1.5px 6px rgba(0,0,0,0.08);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  min-width: 340px;
+  max-width: 95vw;
+  width: 400px;
+  position: relative;
+  animation: modalPopIn 0.25s cubic-bezier(.4,2,.6,1) both;
+}
+
+@keyframes modalPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+#projectForm h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #3730a3;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+#projectForm .form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#projectForm label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #3730a3;
+}
+
+#projectForm input,
+#projectForm select,
+#projectForm textarea {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s;
+  background: #f8fafc;
+}
+
+#projectForm input:focus,
+#projectForm select:focus,
+#projectForm textarea:focus {
+  border-color: #4f46e5;
+  outline: none;
+}
+
+#projectForm textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+#projectForm .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+#projectForm .btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#projectForm .btn-primary {
+  background-color: #4f46e5;
+  color: #fff;
+}
+
+#projectForm .btn-primary:hover {
+  background-color: #3730a3;
+}
+
+#projectForm .btn-secondary {
+  background-color: #e5e7eb;
+  color: #3730a3;
+}
+
+#projectForm .btn-secondary:hover {
+  background-color: #c7d2fe;
+  color: #3730a3;
+}
+
+/* Close (X) button for modal */
+#projectForm .close-modal {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+#projectForm .close-modal:hover {
+  color: #e74c3c;
+}
+
+/* Profile form styling for user dashboard */
+#profile {
+  max-width: 420px;
+  margin: 2.5rem auto 0 auto;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(60,60,120,0.08);
+  padding: 2.2rem 2rem 2rem 2rem;
+}
+
+#profile h2 {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #3730a3;
+  margin-bottom: 1.7rem;
+  letter-spacing: 0.5px;
+}
+
+#userProfileForm .form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#userProfileForm label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #3730a3;
+}
+
+#userProfileForm input {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.3s;
+}
+
+#userProfileForm input:focus {
+  border-color: #4f46e5;
+  outline: none;
+}
+
+#userProfileForm .btn-primary {
+  margin-top: 1.2rem;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #4f46e5;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#userProfileForm .btn-primary:hover {
+  background-color: #3730a3;
+}
+
+/* Responsive for small screens */
+@media (max-width: 600px) {
+  #projectForm {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+    min-width: 0;
+    width: 98vw;
+  }
+  
+  #profile {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+    max-width: 98vw;
   }
 }

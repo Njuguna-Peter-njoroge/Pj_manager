@@ -1,8 +1,8 @@
 @baseUrl = http://localhost:3000
 @contentType = application/json
 
-@adminToken = 
-@adminId = 
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTVkYTE1MC0zOWQyLTRmMmItYTlkYi1kY2YxMWY2ZjZkMWUiLCJlbWFpbCI6Im1hcmtuZHdpZ2FAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUwMTExMTY1LCJleHAiOjE3NTAxOTc1NjV9.wnIB55t02rS05LAyDgnv-cEuu-CGa0cMDygLp2qoUDQ
+@adminId = 155da150-39d2-4f2b-a9db-dcf11f6f6d1e
 
 @userToken = 
 @userId =  

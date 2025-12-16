@@ -1,4 +1,4 @@
-import { Project } from './types';
+import type { Project } from './types';
 
 (() => {
   const role = localStorage.getItem('role');
@@ -7,146 +7,184 @@ import { Project } from './types';
   }
 })();
 
-function renderProjects(projects: Project[]): void {
-  const container = document.getElementById("projectsGrid");
-  if (!container) return;
-  
-  container.innerHTML = "";
-
-  if (projects.length === 0) {
-    container.innerHTML = "<p>No assigned projects yet.</p>";
-    return;
-  }
-
-  const project = projects[0]; 
-
-  const card = document.createElement("div");
-  card.className = "project-card";
-
-  card.innerHTML = `
-    <h3>${project.name}</h3>
-    <p><strong>Status:</strong> ${formatStatus(project.status)}</p>
-    <p><strong>Ends:</strong> ${new Date(project.endDate).toLocaleDateString()}</p>
-    <p><strong>Created:</strong> ${new Date(project.createdAt).toLocaleDateString()}</p>
-    ${project.description ? `<p>${project.description}</p>` : ""}
-    ${project.status !== "COMPLETED" ? `<button id="completeProjectBtn">Mark as Completed</button>` : ""}
-  `;
-
-  container.appendChild(card);
-
-  const completeBtn = document.getElementById("completeProjectBtn");
-  if (completeBtn) {
-    completeBtn.addEventListener("click", () => {
-      void markProjectAsCompleted(project.id);
-    });
-  }
-}
-
-function formatStatus(status: string): string {
-  return status.replace("_", " ").toLowerCase().replace(/^\w/, c => c.toUpperCase());
-}
-
-async function fetchUserProjects(): Promise<void> {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    window.location.href = "auth.html";
-    return;
-  }
-
+function decodeJWT(token: string): any {
   try {
-    const res = await fetch("http://localhost:3000/api/user/projects", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!res.ok) throw new Error("Failed to fetch");
-
-    const projects: Project[] = await res.json();
-    renderProjects(projects);
-  } catch (error) {
-    console.error(error);
-    document.getElementById("projectsGrid")!.innerHTML = "<p>Error loading projects</p>";
-  } 
+    const payload = token.split('.')[1];
+    return JSON.parse(atob(payload));
+  } catch {
+    return null;
+  }
 }
 
-async function markProjectAsCompleted(projectId: string): Promise<void> {
-  const token = localStorage.getItem("token");
+function displayUserInfo(): void {
+  const token = localStorage.getItem('token');
   if (!token) return;
+  const payload = decodeJWT(token);
+  if (!payload) return;
+
+  const userName = document.getElementById('userName');
+  const userEmail = document.getElementById('userEmail');
+  if (userName) userName.textContent = payload.name ?? '';
+  if (userEmail) userEmail.textContent = payload.email ?? '';
+}
+
+async function fetchUserProject(): Promise<void> {
+  const token = localStorage.getItem('token');
+  if (!token) return;
+  const payload = decodeJWT(token);
+  if (!payload?.sub) return;
 
   try {
-    const res = await fetch(`http://localhost:3000/api/projects/${projectId}/complete`, {
-      method: "PATCH",
+    const res = await fetch(`http://localhost:3000/projects/user/${payload.sub}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    const data = await res.json();
 
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.message || "Failed to mark as completed");
+    if (!res.ok || !data.success) {
+      renderProjects([]);
+      return;
     }
 
-    alert("Project marked as completed!");
-    await fetchUserProjects(); 
+    renderProjects(data.data ? [data.data] : []);
   } catch (err: any) {
-    alert(err.message);
+    renderProjects([]);
+    console.error('Failed to load project:', err.message);
   }
 }
 
+async function fetchUserProjects(): Promise<Project[]> {
+  const token = localStorage.getItem('token');
+  if (!token) return [];
+  const payload = decodeJWT(token);
+  if (!payload?.sub) return [];
 
-document.addEventListener('DOMContentLoaded', () => {
-  fetchUserProjects();
+  try {
+    const res = await fetch(`http://localhost:3000/projects/user/${payload.sub}/all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) return [];
+    return data.data || [];
+  } catch {
+    return [];
+  }
+}
 
+function renderProjects(projects: Project[]): void {
+  const projectsGrid = document.getElementById('projectsGrid');
+  if (!projectsGrid) return;
+
+  projectsGrid.innerHTML = '';
+
+  if (!projects.length) {
+    projectsGrid.innerHTML = '<p>No project assigned.</p>';
+    return;
+  }
+
+  projects.forEach(project => {
+    const projectDiv = document.createElement('div');
+    projectDiv.className = 'project-card';
+    projectDiv.innerHTML = `
+      <h3>${project.name}</h3>
+      <p>${project.description || ''}</p>
+      <p>Status: <strong>${project.status}</strong></p>
+      <p>Start: ${new Date(project.startDate).toLocaleDateString()}</p>
+      <p>End: ${new Date(project.endDate).toLocaleDateString()}</p>
+      ${project.status !== 'COMPLETED' ? `<button class="btn btn-success" data-project-id="${project.id}">Mark as Completed</button>` : ''}
+    `;
+    projectsGrid.appendChild(projectDiv);
+  });
+
+  projectsGrid.querySelectorAll('button[data-project-id]').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const projectId = (e.target as HTMLButtonElement).getAttribute('data-project-id');
+      if (projectId) {
+        await markProjectAsCompleted(projectId);
+        fetchUserProject();
+      }
+    });
+  });
+}
+
+// Render projects in the dashboard, filtered by status
+async function renderFilteredProjects(): Promise<void> {
+  const filter = (document.getElementById('taskStatusFilter') as HTMLSelectElement)?.value || 'all';
+  const projects = await fetchUserProjects();
+  let filtered = projects;
+  if (filter !== 'all') {
+    filtered = projects.filter(p => p.status === filter);
+  }
+  renderProjects(filtered);
+}
+
+// Mark project as completed
+async function markProjectAsCompleted(projectId: string): Promise<void> {
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
+  if (!token || !userId) {
+    alert('Please log in again');
+    window.location.href = 'auth.html';
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:3000/projects/${projectId}/complete`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to complete project');
+    }
+
+    alert('Project marked as completed! Admin has been notified.');
+    await renderFilteredProjects(); 
+
+  } catch (error) {
+    console.error('Error completing project:', error);
+    alert(error instanceof Error ? error.message : 'Failed to complete project');
+  }
+}
+
+function setupSidebarNavigation(): void {
   const navLinks = document.querySelectorAll<HTMLAnchorElement>('.sidebar-nav a');
   const sections = document.querySelectorAll<HTMLElement>('.dashboard-section');
 
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
+      const sectionId = link.dataset.section;
+      if (!sectionId) return;
 
-      const targetSectionId = link.dataset.section;
-      if (!targetSectionId) return;
-
-      navLinks.forEach(nav => nav.classList.remove('active'));
+      navLinks.forEach(l => l.classList.remove('active'));
       link.classList.add('active');
 
       sections.forEach(section => {
-        section.classList.toggle('active', section.id === targetSectionId);
+        section.classList.toggle('active', section.id === sectionId);
       });
     });
   });
+}
 
+function setupLogout(): void {
   const logoutBtn = document.getElementById('logoutBtn');
   logoutBtn?.addEventListener('click', () => {
     localStorage.clear();
     window.location.href = 'auth.html';
   });
-});
-
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-  const navLinks = document.querySelectorAll(".sidebar-nav a");
-  const sections = document.querySelectorAll(".dashboard-section");
-
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-
-      navLinks.forEach((lnk) => lnk.classList.remove("active"));
-
-      link.classList.add("active");
-
-      const targetId = link.getAttribute("data-section");
-
-      sections.forEach((section) => section.classList.remove("active"));
-
-      const targetSection = document.getElementById(targetId!);
-      if (targetSection) {
-        targetSection.classList.add("active");
-      }
-    });
-  });
+  displayUserInfo();
+  renderFilteredProjects();
+  setupSidebarNavigation();
+  setupLogout();
 });
-

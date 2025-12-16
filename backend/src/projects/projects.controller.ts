@@ -100,4 +100,33 @@ export class ProjectsController {
   ): Promise<ApiResponse<ProjectResponseDto>> {
     return this.projectsService.markAsCompleted(id, user.id, user.role);
   }
+
+  @Patch(':id/assign')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @HttpCode(HttpStatus.OK)
+  async assignProject(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body('userId') userId: string,
+  ): Promise<ApiResponse<ProjectResponseDto>> {
+    return this.projectsService.assignProject(id, userId);
+  }
+
+  @Get('user/:userId')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async getUserProject(
+    @Param('userId', ParseUUIDPipe) userId: string,
+  ): Promise<ApiResponse<ProjectResponseDto | null>> {
+    return this.projectsService.getUserProject(userId);
+  }
+
+  @Get('user/:userId/all')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async getAllUserProjects(
+    @Param('userId', ParseUUIDPipe) userId: string,
+  ): Promise<ApiResponse<ProjectResponseDto[]>> {
+    return this.projectsService.getAllUserProjects(userId);
+  }
 }

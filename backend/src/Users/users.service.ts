@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import {
   BadRequestException,
   ForbiddenException,
@@ -180,7 +178,6 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    // Check if any changes are being made
     const hasNoChanges = Object.keys(data).every((key) => {
       return existingUser[key] === data[key];
     });
@@ -230,14 +227,12 @@ export class UsersService {
         throw new NotFoundException('User not found');
       }
 
-      // Start a transaction to handle deletion
       await this.prisma.$transaction(async (prisma) => {
         await prisma.project.updateMany({
           where: { assigneeId: id },
           data: { assigneeId: null },
         });
 
-        // Finally delete the user
         await prisma.user.delete({
           where: { id },
         });

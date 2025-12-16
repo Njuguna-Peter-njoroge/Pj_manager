@@ -3,6 +3,7 @@ import {
   IsString,
   IsOptional,
   IsDateString,
+  IsISO8601,
 } from 'class-validator';
 import { ProjectStatus } from '../interfaces/project.interface';
 
@@ -15,7 +16,8 @@ export class CreateProjectDto {
   @IsString()
   description?: string;
 
-  @IsNotEmpty()
+  @IsISO8601()
+  @IsNotEmpty({ message: 'endDate should not be empty' })
   @IsDateString()
   endDate!: string;
 

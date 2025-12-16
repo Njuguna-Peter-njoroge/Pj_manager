@@ -28,13 +28,11 @@ async function bootstrap() {
         },
     });
 
-    // Mock MailerService instance for direct usage (adjust as per your EmailService requirements)
     const mailerService = new MailerService({ transporter, defaults: { from: mailerConfig.user } } as any, null as any);
 
     const emailService = new EmailService(mailerService);
     const serviceManager = new BackgroundServiceManager(configService, prisma, emailService);
 
-    // Handle shutdown gracefully
     process.on('SIGTERM', async () => {
         console.log('SIGTERM received. Shutting down background services...');
         await serviceManager.stopAll();
@@ -47,7 +45,6 @@ async function bootstrap() {
         process.exit(0);
     });
 
-    // Start all services
     await serviceManager.startAll();
 }
 

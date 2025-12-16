@@ -1,160 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project Manager - Admin Dashboard</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/dashboard.css">
-    <!-- Add Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/dashboard.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <div class="dashboard-container">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2>Admin Dashboard</h2>
-            </div>
-            <nav class="sidebar-nav">
-                <ul>
-                   <!-- Ts -->
-                </ul>
-            </nav>
-            <div class="sidebar-footer">
-                <button id="logoutBtn" class="btn btn-danger">Logout</button>
-            </div>
-        </aside>
-
-        <main class="dashboard-main">
-            <header class="dashboard-header">
-                <div class="user-info">
-                    <!-- Ts-->
-                    <div class="user-details">
-                        <span id="adminName" class="admin-name"></span>
-                        <span id="adminEmail" class="admin-email"></span>
-                    </div>
-                </div>
-            </header>
-
-            <div class="dashboard-content">
-                <section id="overview" class="dashboard-section active">
-                    <h2>Overview</h2>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>Total Users</h3>
-                            <p id="totalUsers">0</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Total Projects</h3>
-                            <p id="totalProjects">0</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Active Projects</h3>
-                            <p id="activeProjects">0</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="users" class="dashboard-section">
-                    <h2>Users Management</h2>
-                    <div class="table-container">
-                        <table id="usersTable">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <section id="projects" class="dashboard-section">
-                    <h2>Projects Management</h2>
-                    <div class="table-actions">
-                        <button class="btn btn-primary" id="addProjectBtn">Add New Project</button>
-                    </div>
-                    <div class="table-container">
-                        <table id="projectsTable">
-                            <thead>
-                                <tr>
-                                    <th>Project Name</th>
-                                    <th>Assigned User</th>
-                                    <th>Status</th>
-                                    <th>Created Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <section id="settings" class="dashboard-section">
-                    <h2>Settings</h2>
-                    <form id="adminSettingsForm">
-                        <div class="form-group">
-                            <label for="adminFullName">Full Name</label>
-                            <input type="text" id="adminFullName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="adminEmailInput">Email</label>
-                            <input type="email" id="adminEmailInput" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="currentPassword">Current Password</label>
-                            <input type="password" id="currentPassword" placeholder="Leave blank to keep current password">
-                        </div>
-                        <div class="form-group">
-                            <label for="newPassword">New Password</label>
-                            <input type="password" id="newPassword" placeholder="Leave blank to keep current password">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </form>
-                </section>
-            </div>
-        </main>
-    </div>
-
-    <!-- Modal for adding projects -->
-    <div id="addProjectModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Add New Project</h2>
-            <form id="addProjectForm">
-                <div class="form-group">
-                    <label for="projectName">Project Name</label>
-                    <input type="text" id="projectName" required>
-                </div>
-                <div class="form-group">
-                    <label for="projectDescription">Description</label>
-                    <textarea id="projectDescription" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="projectStatus">Status</label>
-                    <select id="projectStatus" required>
-                        <option value="PENDING">Pending</option>
-                        <option value="IN_PROGRESS">In Progress</option>
-                        <option value="COMPLETED">Completed</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="projectStartDate">Start Date</label>
-                    <input type="date" id="projectStartDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="projectEndDate">End Date</label>
-                    <input type="date" id="projectEndDate">
-                </div>
-                <button type="submit" class="btn btn-primary">Add Project</button>
-            </form>
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>Admin Dashboard</h2>
         </div>
+        <nav class="sidebar-nav">
+          <ul>
+          </ul>
+        </nav>
+        <div class="sidebar-footer">
+          <button id="logoutBtn" class="btn btn-danger">Logout</button>
+        </div>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="dashboard-header">
+          <div class="user-info">
+            <div class="user-details">
+              <span id="adminName" class="admin-name"></span>
+              <span id="adminEmail" class="admin-email"></span>
+            </div>
+          </div>
+        </header>
+
+        <div class="dashboard-content">
+          <section id="overview" class="dashboard-section active">
+            <h2>Overview</h2>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <h3>Total Users</h3>
+                <p id="totalUsers">0</p>
+              </div>
+              <div class="stat-card">
+                <h3>Total Projects</h3>
+                <p id="totalProjects">0</p>
+              </div>
+              <div class="stat-card">
+                <h3>Active Projects</h3>
+                <p id="activeProjects">0</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="users" class="dashboard-section">
+            <h2>Users Management</h2>
+            <div class="table-container">
+              <table id="usersTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="projects" class="dashboard-section">
+            <h2>Projects Management</h2>
+            <div class="table-actions">
+              <button class="btn btn-primary" id="addProjectBtn">
+                Add New Project
+              </button>
+            </div>
+            <div class="table-container">
+              <table id="projectsTable">
+                <thead>
+                  <tr>
+                    <th>Project Name</th>
+                    <th>Assigned User</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+          
+          <div id="projectFormContainer" class="project-form-container hidden">
+            <form id="projectForm">
+              <h3>Create New Project</h3>
+              <div class="form-group">
+                <label for="projectName">Project Name</label>
+                <input type="text" id="projectName" required />
+              </div>
+              <div class="form-group">
+                <label for="projectAssignee">Assign User</label>
+                <select id="projectAssignee">
+                  <option value="">Select User</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="projectEndDate">End Date</label>
+                <input type="date" id="projectEndDate" required />
+              </div>
+              <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">
+                  Create Project
+                </button>
+                <button
+                  type="button"
+                  id="cancelProjectBtn"
+                  class="btn btn-outline"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <section id="settings" class="dashboard-section">
+            <h2>Settings</h2>
+            <form id="adminSettingsForm">
+              <div class="form-group">
+                <label for="adminFullName">Full Name</label>
+                <input type="text" id="adminFullName" required />
+              </div>
+              <div class="form-group">
+                <label for="adminEmailInput">Email</label>
+                <input type="email" id="adminEmailInput" required />
+              </div>
+              <div class="form-group">
+                <label for="currentPassword">Current Password</label>
+                <input
+                  type="password"
+                  id="currentPassword"
+                  placeholder="Leave blank to keep current password"
+                />
+              </div>
+              <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  placeholder="Leave blank to keep current password"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Save Changes
+              </button>
+            </form>
+          </section>
+        </div>
+      </main>
     </div>
 
     <script src="./dist/admin.js"></script>
-</body>
+  </body>
 </html>
